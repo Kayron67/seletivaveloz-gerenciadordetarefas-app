@@ -28,6 +28,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY . .
 
 RUN mkdir -p /app/data && chown -R 1000:1000 /app/data
+RUN chown -R 1000:1000 /app
 
 RUN useradd --create-home appuser
 USER appuser

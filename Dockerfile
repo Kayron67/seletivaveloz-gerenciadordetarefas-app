@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends gcc
+RUN apt-get update && apt-get install -y --no-install-recommends gcc git
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -29,6 +29,8 @@ COPY . .
 
 RUN mkdir -p /app/data && chown -R 1000:1000 /app/data
 RUN chown -R 1000:1000 /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --create-home appuser
 USER appuser

@@ -1,0 +1,30 @@
+{
+    "name": "Gerenciador de Tarefas",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode-remote.remote-containers",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "batisteo.vscode-django",
+                "thebarkman.vscode-djaneiro",
+                "buildwithlayer.django-integration-expert-Gus30",
+                "MaxChamps.django-commands",
+                "Emeric-Defay.django-factory",
+                "MengsiCode.vscode-django-boilerplate",
+                "almahdi.code-django",
+                "shamanu4.django-intellisense",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-python.debugpy",
+                "ms-python.vscode-python-envs"
+            ]
+        }
+    },
+    "forwardPorts": [8000],
+    "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+}

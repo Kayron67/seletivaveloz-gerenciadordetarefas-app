@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 class Tarefa(models.Model):
     class Prioridade(models.TextChoices):
@@ -16,7 +16,7 @@ class Tarefa(models.Model):
         choices=Prioridade.choices,
         default=Prioridade.PRIORIDADE_MEDIA,
     )
-    responsaveis = models.ManyToManyField(User, related_name='tarefas')
+    responsaveis = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tarefas')
 
     def __str__(self):
         return self.titulo

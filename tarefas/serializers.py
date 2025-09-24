@@ -1,17 +1,20 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from rest_framework import serializers
 from.models import Tarefa
+from django.contrib.auth import get_user_model
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+getModelUsuario = get_user_model()
+
+class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = getModelUsuario
         fields = ['url', 'username', 'email']
 
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     responsaveis = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='user-detail',
-        queryset=User.objects.all()
+        queryset=getModelUsuario.objects.all()
     )
 
     class Meta:

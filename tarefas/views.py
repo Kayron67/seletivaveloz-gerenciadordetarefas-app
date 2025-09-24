@@ -1,11 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from .models import Tarefa
-from .serializers import TarefaSerializer, UserSerializer
+from .serializers import TarefaSerializer, UsuarioSerializer
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('date_joined')
-    serializer_class = UserSerializer
+getModelUsuario = get_user_model()
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = getModelUsuario.objects.all().order_by('-date_joined')
+    serializer_class = UsuarioSerializer
 
 class TarefaViewSet(viewsets.ModelViewSet):
     queryset = Tarefa.objects.all()

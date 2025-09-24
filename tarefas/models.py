@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Tarefa(models.Model):
     class Prioridade(models.TextChoices):
@@ -8,12 +9,14 @@ class Tarefa(models.Model):
 
     titulo = models.CharField(max_length=200)
     descricao = models.TextField(blank=True, null=True)
+    data_de_entrega = models.DateField(blank=True, null=True)
     concluida = models.BooleanField(default=False)
     prioridade = models.CharField(
         max_length=1,
         choices=Prioridade.choices,
         default=Prioridade.PRIORIDADE_MEDIA,
     )
+    responsaveis = models.ManyToManyField(User, related_name='tarefas')
 
     def __str__(self):
         return self.titulo

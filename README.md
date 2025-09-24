@@ -4,7 +4,7 @@ Desafio de seletiva da Veloz para desenv. um Gerenciador de Tarefas. Requisitos:
 
 [//]: # (
 Tabela busines - view is intended just for devs
-    Tarefas:dada
+    Tarefas:
         -tempo até conclusao -> Tarefas
         -status conclusao -> Tarefas
         -status de prioridade -> Tarefas

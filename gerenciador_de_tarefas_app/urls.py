@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import DefaultRouter
+from rest_framework.routers import DefaultRouter
 from tarefas import views as tarefas_views
 from projetos import views as projetos_views
 

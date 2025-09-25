@@ -9,6 +9,11 @@ class Projeto(models.Model):
         on_delete=models.CASCADE,
         related_name='projetos_criados'
     )
+    membros = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='projetos_participantes',
+        blank=True
+    )
 
     def __str__(self):
         return self.titulo

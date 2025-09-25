@@ -13,7 +13,7 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     responsaveis = serializers.HyperlinkedRelatedField(
         many=True,
-        view_name='user-detail',
+        view_name='usuario-detail',
         queryset=getModelUsuario.objects.all()
     )
 

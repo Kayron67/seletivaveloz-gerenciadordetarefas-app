@@ -7,10 +7,11 @@ class Tarefa(models.Model):
         PRIORIDADE_MEDIA = 'M', 'Média'
         PRIORIDADE_ALTA = 'A', 'Alta'
 
-    titulo = models.CharField(max_length=200)
+    titulo = models.CharField(max_length=100)
     descricao = models.TextField(blank=True, null=True)
     data_de_entrega = models.DateField(blank=True, null=True)
     concluida = models.BooleanField(default=False)
+    projeto = models.ForeignKey('projetos.Projeto', on_delete=models.CASCADE, related_name='tarefas', null=True)
     prioridade = models.CharField(
         max_length=1,
         choices=Prioridade.choices,

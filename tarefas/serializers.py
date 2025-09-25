@@ -19,4 +19,4 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Tarefa
-        fields = ['url', 'id', 'titulo', 'descricao', 'data_de_entrega', 'concluida', 'prioridade', 'responsaveis']
+        fields = ['url', 'id', 'titulo', 'descricao', 'data_de_entrega', 'concluida', 'projeto', 'prioridade', 'responsaveis']

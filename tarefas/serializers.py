@@ -5,13 +5,22 @@ from core.fields import HyperlinkedNestedIdentityField
 
 getModelUsuario = get_user_model()
 
+class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
+    url = HyperlinkedNestedIdentityField(
+        view_name='projeto-tarefas-detail',
+        parent_lookup_kwargs={'projeto_pk': 'projeto.pk'}
+    )
+
+    class Meta:
+        model = Tarefa
+        fields = ['url', 'id', 'titulo', 'concluida']
+
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = getModelUsuario
         fields = ['url', 'username', 'email']
 
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
-
     url = HyperlinkedNestedIdentityField(
         view_name='projeto-tarefas-detail',
         parent_lookup_kwargs={'projeto_pk': 'projeto.pk'}

@@ -1,14 +1,11 @@
 from rest_framework import serializers
 from .models import Projeto
+from tarefas.serializers import TarefaResumidaEmProjetoSerializer
 
 class ProjetoSerializer(serializers.HyperlinkedModelSerializer):
-
-    tarefas_url = serializers.HyperlinkedIdentityField(
-        view_name='projeto-tarefas-list',
-        lookup_url_kwarg='projeto_pk'
-    )
+    tarefas = TarefaResumidaEmProjetoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Projeto
-        fields = ['url', 'id', 'titulo', 'descricao', 'criador', 'membros', "tarefas_url"]
+        fields = ['url', 'id', 'titulo', 'descricao', 'criador', 'membros', "tarefas"]
         read_only_fields = ['criador']

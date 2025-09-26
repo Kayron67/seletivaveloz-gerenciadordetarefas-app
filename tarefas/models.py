@@ -11,7 +11,7 @@ class Tarefa(models.Model):
     descricao = models.TextField(blank=True, null=True)
     data_de_entrega = models.DateField(blank=True, null=True)
     concluida = models.BooleanField(default=False)
-    projeto = models.ForeignKey('projetos.Projeto', on_delete=models.CASCADE, related_name='tarefas', null=True)
+    projeto = models.ForeignKey('projetos.Projeto', on_delete=models.CASCADE, related_name='tarefas')
     prioridade = models.CharField(
         max_length=1,
         choices=Prioridade.choices,

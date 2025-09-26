@@ -8,5 +8,5 @@ class ProjetoViewSet(viewsets.ModelViewSet):
     serializer_class = ProjetoSerializer
     permission_classes = [IsAuthenticated]
 
-def perform_create(self, serializer):
-    serializer.save(criador=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(criador=self.request.user)

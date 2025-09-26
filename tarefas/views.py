@@ -12,6 +12,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 class TarefaViewSet(viewsets.ModelViewSet):
-    queryset = Tarefa.objects.all()
     serializer_class = TarefaSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Tarefa.objects.filter(projeto=self.kwargs['projeto_pk'])
+    
+    def perform_create(self, serializer):
+        serializer.save(projeto_id=self.kwargs['projeto_pk'])

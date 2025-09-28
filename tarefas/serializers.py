@@ -16,11 +16,6 @@ class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
         model = Tarefa
         fields = ['titulo', 'id', 'url', 'concluida']
 
-class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = getModelUsuario
-        fields = ['username', 'email', 'url']
-
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     url = HyperlinkedNestedIdentityField(
         view_name='projeto-tarefas-detail',

@@ -3,10 +3,11 @@ from django.urls import path, include
 from rest_framework_nested import routers
 from tarefas import views as tarefas_views
 from projetos import views as projetos_views
+from usuarios import views as usuarios_views
 
 router = routers.DefaultRouter()
 router.register(r'projetos', projetos_views.ProjetoViewSet, basename='projeto')
-router.register(r'usuarios', tarefas_views.UsuarioViewSet, basename='usuario')
+router.register(r'usuarios', usuarios_views.UsuarioViewSet, basename='usuario')
 
 projetos_router = routers.NestedSimpleRouter(router, r'projetos', lookup='projeto')
 projetos_router.register(r'tarefas', tarefas_views.TarefaViewSet, basename='projeto-tarefas')

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 from .models import Tarefa
 from django.contrib.auth import get_user_model
 from core.fields import HyperlinkedNestedIdentityField
@@ -33,12 +34,16 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
         required=False
     )
 
-    projeto = serializers.HyperlinkedRelatedField(
-        view_name='projeto-detail',
-        read_only=True,
-    )
+    projeto_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Tarefa
-        fields = ['url', 'id', 'titulo', 'descricao', 'data_de_entrega', 'concluida', 'projeto', 'prioridade', 'responsaveis']
-        read_only_fields = ['projeto']
+        fields = ['url', 'id', 'titulo', 'descricao', 'data_de_entrega', 'concluida', 'projeto_info', 'prioridade', 'responsaveis']
+
+    def get_projeto_info(self, obj):
+        request = self.context.get('request')
+        projeto_url = reverse('projeto-detail', kwargs={'pk': obj.projeto.pk}, request=request)
+        return {
+            'titulo': obj.projeto.titulo,
+            'url': projeto_url
+        }

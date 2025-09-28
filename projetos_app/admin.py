@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Projeto
-from tarefas.models import Tarefa
+from tarefas_app.models import Tarefa
 
 class TarefaInlineParaProjetos(admin.TabularInline):
     model = Tarefa

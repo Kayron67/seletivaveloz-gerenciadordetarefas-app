@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Projeto
-from tarefas.serializers import TarefaResumidaEmProjetoSerializer
+from tarefas_app.serializers import TarefaResumidaEmProjetoSerializer
 
 class ProjetoSerializer(serializers.HyperlinkedModelSerializer):
     tarefas = TarefaResumidaEmProjetoSerializer(many=True, read_only=True)

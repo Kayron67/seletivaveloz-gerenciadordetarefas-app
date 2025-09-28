@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
-from tarefas import views as tarefas_views
-from projetos import views as projetos_views
-from usuarios import views as usuarios_views
+from tarefas_app import views as tarefas_views
+from projetos_app import views as projetos_views
+from usuarios_app import views as usuarios_views
 
 router = routers.DefaultRouter()
 router.register(r'projetos', projetos_views.ProjetoViewSet, basename='projeto')

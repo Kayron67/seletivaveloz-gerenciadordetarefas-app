@@ -14,12 +14,12 @@ class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tarefa
-        fields = ['url', 'id', 'titulo', 'concluida']
+        fields = ['titulo', 'id', 'url', 'concluida']
 
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = getModelUsuario
-        fields = ['url', 'username', 'email']
+        fields = ['username', 'email', 'url']
 
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     url = HyperlinkedNestedIdentityField(
@@ -34,13 +34,13 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
         required=False
     )
 
-    projeto_info = serializers.SerializerMethodField()
+    projeto_info_assosciado = serializers.SerializerMethodField()
 
     class Meta:
         model = Tarefa
-        fields = ['url', 'id', 'titulo', 'descricao', 'data_de_entrega', 'concluida', 'projeto_info', 'prioridade', 'responsaveis']
+        fields = ['titulo', 'id', 'url', 'descricao', 'projeto_info_assosciado', 'data_de_entrega', 'concluida', 'prioridade', 'responsaveis']
 
-    def get_projeto_info(self, obj):
+    def get_projeto_info_assosciado(self, obj):
         request = self.context.get('request')
         projeto_url = reverse('projeto-detail', kwargs={'pk': obj.projeto.pk}, request=request)
         return {

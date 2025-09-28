@@ -5,12 +5,12 @@ from tarefas.serializers import TarefaResumidaEmProjetoSerializer
 class ProjetoSerializer(serializers.HyperlinkedModelSerializer):
     tarefas = TarefaResumidaEmProjetoSerializer(many=True, read_only=True)
 
-    adicionar_tarefa_url = serializers.HyperlinkedIdentityField(
+    adicionar_tarefa_para_esse_projeto_url = serializers.HyperlinkedIdentityField(
         view_name='projeto-tarefas-list',
         lookup_url_kwarg='projeto_pk'
     )
 
     class Meta:
         model = Projeto
-        fields = ['url', 'id', 'titulo', 'descricao', 'criador', 'membros', 'adicionar_tarefa_url', 'tarefas']
+        fields = ['titulo', 'id', 'url',  'criador', 'descricao', 'membros', 'tarefas', 'adicionar_tarefa_para_esse_projeto_url']
         read_only_fields = ['criador']

@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'tarefas',
-    'usuarios',
-    'projetos',
+    'tarefas_app',
+    'usuarios_app',
+    'projetos_app',
     'rest_framework',
+    'rest_framework_nested'
 ]
 
 MIDDLEWARE = [
@@ -126,4 +127,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'usuarios.Usuario'
+AUTH_USER_MODEL = 'usuarios_app.Usuario'

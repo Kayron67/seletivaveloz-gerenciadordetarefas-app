@@ -11,6 +11,7 @@ router.register(r'usuarios', usuarios_views.UsuarioViewSet, basename='usuario')
 
 projetos_router = routers.NestedSimpleRouter(router, r'projetos', lookup='projeto')
 projetos_router.register(r'tarefas', tarefas_views.TarefaViewSet, basename='projeto-tarefas')
+projetos_router.register(r'fileiras', projetos_views.FileiraViewSet, basename='projeto-fileiras')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

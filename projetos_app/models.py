@@ -17,3 +17,15 @@ class Projeto(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+class Fileira(models.Model):
+    titulo = models.CharField(max_length=100)
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='fileiras')
+    ordem = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['ordem']
+        unique_together = ['projeto', 'titulo']
+
+    def __str__(self):
+        return self.titulo

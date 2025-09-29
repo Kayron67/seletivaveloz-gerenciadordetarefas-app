@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from projetos_app.models import Fileira
 
 class Tarefa(models.Model):
     class Prioridade(models.TextChoices):
@@ -11,7 +12,7 @@ class Tarefa(models.Model):
     descricao = models.TextField(blank=True, null=True)
     data_de_entrega = models.DateField(blank=True, null=True)
     concluida = models.BooleanField(default=False)
-    projeto = models.ForeignKey('projetos_app.Projeto', on_delete=models.CASCADE, related_name='tarefas')
+    fileira = models.ForeignKey(Fileira, on_delete=models.CASCADE, related_name='tarefas')
     prioridade = models.CharField(
         max_length=1,
         choices=Prioridade.choices,
@@ -21,3 +22,7 @@ class Tarefa(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+    @property
+    def projeto(self):
+        return self.fileira.projeto

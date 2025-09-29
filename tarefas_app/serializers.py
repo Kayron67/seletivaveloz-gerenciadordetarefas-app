@@ -3,13 +3,14 @@ from rest_framework.reverse import reverse
 from .models import Tarefa
 from django.contrib.auth import get_user_model
 from core.fields import HyperlinkedNestedIdentityField
+from projetos_app.models import Fileira
 
 UsuarioModel = get_user_model()
 
 class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
     url = HyperlinkedNestedIdentityField(
         view_name='projeto-tarefas-detail',
-        parent_lookup_kwargs={'projeto_pk': 'projeto.pk'}
+        parent_lookup_kwargs={'projeto_pk': 'fileira.projeto.pk'}
     )
 
     class Meta:
@@ -19,7 +20,7 @@ class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
 class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     url = HyperlinkedNestedIdentityField(
         view_name='projeto-tarefas-detail',
-        parent_lookup_kwargs={'projeto_pk': 'projeto.pk'}
+        parent_lookup_kwargs={'projeto_pk': 'fileira.projeto.pk'}
     )
 
     responsaveis = serializers.HyperlinkedRelatedField(
@@ -29,11 +30,13 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
         required=False
     )
 
+    fileira = serializers.PrimaryKeyRelatedField(queryset=Fileira.objects.all())
+
     projeto_info_assosciado = serializers.SerializerMethodField()
 
     class Meta:
         model = Tarefa
-        fields = ['titulo', 'id', 'url', 'descricao', 'projeto_info_assosciado', 'data_de_entrega', 'concluida', 'prioridade', 'responsaveis']
+        fields = ['titulo', 'id', 'url', 'descricao', 'projeto_info_assosciado', 'fileira', 'data_de_entrega', 'concluida', 'prioridade', 'responsaveis']
 
     def get_projeto_info_assosciado(self, obj):
         request = self.context.get('request')
@@ -42,3 +45,11 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
             'titulo': obj.projeto.titulo,
             'url': projeto_url
         }
+    
+    def validate_fileira(self, value):
+        if self.instance:
+            projeto_original = self.instance.fileira.projeto
+            novo_projeto = value.projeto
+            if projeto_original != novo_projeto:
+                raise serializers.ValidationError("Não se pode mover a tarefa para a fileira de outro projeto")
+        return value

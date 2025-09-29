@@ -4,10 +4,9 @@ from .models import Usuario
 from .serializers import UsuarioSerializer
 from django.contrib.auth import get_user_model
 
-getModelUsuario = get_user_model()
+UsuarioModel = get_user_model()
 
 class UsuarioViewSet(viewsets.ModelViewSet):
-    #queryset = Usuario.objects.all().order_by('-date_joined')
-    queryset = getModelUsuario.objects.all().order_by('-date_joined')
+    queryset = UsuarioModel.objects.all().order_by('-date_joined')
     serializer_class = UsuarioSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]

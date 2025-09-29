@@ -4,7 +4,7 @@ from .models import Tarefa
 from django.contrib.auth import get_user_model
 from core.fields import HyperlinkedNestedIdentityField
 
-getModelUsuario = get_user_model()
+UsuarioModel = get_user_model()
 
 class TarefaResumidaEmProjetoSerializer(serializers.ModelSerializer):
     url = HyperlinkedNestedIdentityField(
@@ -25,7 +25,7 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
     responsaveis = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='usuario-detail',
-        queryset=getModelUsuario.objects.all(),
+        queryset=UsuarioModel.objects.all(),
         required=False
     )
 

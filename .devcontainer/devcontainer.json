@@ -6,6 +6,9 @@
     },
     "customizations": {
         "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/opt/venv/bin/python"
+            },
             "extensions": [
                 "ms-vscode-remote.remote-containers",
                 "ms-python.python",

@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 UsuarioModel = get_user_model()
 
-class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = UsuarioModel.objects.all().order_by('-date_joined')
+class UsuarioViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = UsuarioModel.objects.all().order_by('username')
     serializer_class = UsuarioSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]

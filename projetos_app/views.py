@@ -13,4 +13,5 @@ class ProjetoViewSet(viewsets.ModelViewSet):
         return Projeto.objects.filter(Q(criador=user) | Q(membros=user)).distinct()
 
     def perform_create(self, serializer):
-        serializer.save(criador=self.request.user)
+        projeto = serializer.save(criador=self.request.user)
+        projeto.membros.add(self.request.user)

@@ -77,6 +77,9 @@ Após o contêiner estar em execução, faça as migrações do banco de dados e
 
     # Criar um superusuário
     python manage.py createsuperuser
+
+    # Rode o servidor para acessar-lo
+    python manage.py runserver
     ```
 3.  Acesse o painel de administração em `http://localhost:8000/admin/` ou o endpoint da api em `http://localhost:8000/api` com as credenciais que você acabou de criar.
 

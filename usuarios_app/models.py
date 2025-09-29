@@ -6,5 +6,5 @@ class Usuario(AbstractUser):
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
 
-def __str__(self):
-    return self.username
+    def __str__(self):
+        return self.username

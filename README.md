@@ -58,7 +58,7 @@ _Here not be Dragons :^(_
     ```bash
     code .
     ```
-3.  **Reabra no Contêiner** dentro do VsCode o arquivo `.devcontainer/devcontainer.json`, ou pelo canto inferior esquerdo no >< simbolo azul ou na notificação do canto inferior direito perguntando se você deseja "Reabrir no Contêiner" (Reopen in Container). Clique e abra.
+3.  **Reabra no Contêiner** dentro do VsCode o arquivo `.devcontainer/devcontainer.json`, ou pelo canto inferior esquerdo no simbolo azul (`><`) ou na notificação do canto inferior direito perguntando se você deseja "Reabrir no Contêiner" (Reopen in Container). Clique e abra.
 4.  **Aguarde a Construção** da imagem Docker e do ambiente de desenvolvimento. (Se quiser vererificar o log clique na notificação do Vscode)
 5.  **Servidor estará em Execução** conectando ao ambiente dentro do contêiner apos concluir a construção. O servidor de desenvolvimento Django será iniciado automaticamente na porta 8000.
 6.  **Acesse a API**: em seu navegador no endereço `http://localhost:8000/api/`.

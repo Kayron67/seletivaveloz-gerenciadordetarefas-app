@@ -3,6 +3,7 @@
 #### Requisitos pedidos: Organizar e acompanhar atividades; Ser estruturado; Ter no Mínimo 3 CRUDs; Leitura, atualização e exclusão de registros; Integrar entidades; 
 #### Ferramentas requeridas: Front Bootstrap; Back Django. 
 #### Objetivos: Conhecer CRUDs; Boas práticas de código; Front funcional; UX e fácil navegação.
+
  
 [//]: # (
 Tabela busines - view is intended just for devs
@@ -11,6 +12,9 @@ Tabela busines - view is intended just for devs
         -status conclusao -> Tarefas
         -status de prioridade -> Tarefas
         -responsaveis atribuidos -> Usuarios
+        -novos status criados -> Tarefas
+        -estar obrigatoriamente dentro de projetos -> Projetos
+        -
     Projetos:
         -grupo de tarefas --> Tarefas
         -ligado a usuario --> Usuarios
@@ -21,7 +25,8 @@ Tabela busines - view is intended just for devs
         - criar projetos ---> Projetos
         - gerenciar projetos ---> Projetos
         - ligado a varios projetos ---> Usuarios
-        -)
+        -
+        )
 ```
      _______________________________________________________
 ()==(                                                      (@==()

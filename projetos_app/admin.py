@@ -12,5 +12,7 @@ class ProjetoAdmin(admin.ModelAdmin):
     inlines = [TarefaInlineParaProjetos]
     list_display = ('titulo', 'criador')
     search_fields = ('titulo', 'descricao')
+    list_filter = ('criador', 'membros')
+    filter_horizontal = ('membros',)
 
 admin.site.register(Projeto, ProjetoAdmin)

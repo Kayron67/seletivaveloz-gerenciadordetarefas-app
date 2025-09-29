@@ -78,7 +78,7 @@ Após o contêiner estar em execução, faça as migrações do banco de dados e
     # Criar um superusuário
     python manage.py createsuperuser
     ```
-3.  Acesse o painel de administração em `http://localhost:8000/admin/` com as credenciais que você acabou de criar.
+3.  Acesse o painel de administração em `http://localhost:8000/admin/` ou o endpoint da api em `http://localhost:8000/api` com as credenciais que você acabou de criar.
 
 ## Projeto para V3loz e Unama Alcindo Cacela
 <img src="https://raw.githubusercontent.com/projeto-v3l0z/V3L0Z/24a24c04838a4bef840cb6ace023b3b537c8e2b1/static/home/img/V3L0Z%20-%20Rocket%20(Orange).svg" height="300" width="300"><img src="https://www.ecossistema.v3l0z.com.br/static/images/logo_unama.png" height="360" width="360">

@@ -38,6 +38,21 @@ class TarefaSerializer(serializers.HyperlinkedModelSerializer):
         model = Tarefa
         fields = ['titulo', 'id', 'url', 'descricao', 'projeto_info_assosciado', 'fileira', 'data_de_entrega', 'concluida', 'prioridade', 'responsaveis']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if kwargs.get('many', False):
+            return
+
+        if self.instance and not isinstance(self.instance, list) and hasattr(self.instance, 'projeto'):
+            projeto = self.instance.projeto
+            self.fields['fileira'].queryset = Fileira.objects.filter(projeto=projeto)
+        elif self.context.get('view'):
+            view = self.context['view']
+            if 'projeto_pk' in view.kwargs:
+                projeto_pk = view.kwargs['projeto_pk']
+                self.fields['fileira'].queryset = Fileira.objects.filter(projeto_id=projeto_pk)
+
     def get_projeto_info_assosciado(self, obj):
         request = self.context.get('request')
         projeto_url = reverse('projeto-detail', kwargs={'pk': obj.projeto.pk}, request=request)

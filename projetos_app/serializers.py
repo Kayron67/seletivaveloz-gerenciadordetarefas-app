@@ -10,7 +10,7 @@ class FileiraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Fileira
-        fields = ['id', 'titulo', 'ordem', 'tarefas', 'adicionar_tarefa_para_essa_fileira_url']
+        fields = ['titulo', 'id', 'ordem', 'tarefas', 'adicionar_tarefa_para_essa_fileira_url']
 
     def get_adicionar_tarefa_para_essa_fileira_url(self, obj):
         request = self.context.get('request')

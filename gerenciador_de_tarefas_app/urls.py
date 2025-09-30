@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
+from core import views as core_views
 from tarefas_app import views as tarefas_views
 from projetos_app import views as projetos_views
 from usuarios_app import views as usuarios_views
@@ -17,5 +18,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/', include(projetos_router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  
+    path("", core_views.HomeView.as_view(), name="home"),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

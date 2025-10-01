@@ -19,5 +19,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(projetos_router.urls)),
     path("", core_views.HomeView.as_view(), name="home"),
+    path('projetos/<int:pk>/', projetos_views.ProjetoDetailPageView.as_view(), name='projeto-detail-page'),
+    path('accounts/signup/', core_views.SignUpView.as_view(), name='signup'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

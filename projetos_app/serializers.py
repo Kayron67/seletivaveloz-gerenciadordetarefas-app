@@ -3,6 +3,9 @@ from rest_framework.reverse import reverse
 from .models import Fileira, Projeto
 from tarefas_app.serializers import TarefaResumidaEmProjetoSerializer
 from usuarios_app.serializers import UsuarioResumidoSerializer
+from django.contrib.auth import get_user_model
+
+UsuarioModel = get_user_model()
 
 class FileiraSerializer(serializers.ModelSerializer):
     tarefas = TarefaResumidaEmProjetoSerializer(many=True, read_only=True)
@@ -27,7 +30,12 @@ class ProjetoSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     criador = UsuarioResumidoSerializer(read_only=True)
-    membros = UsuarioResumidoSerializer(many=True, read_only=True)
+    membros = serializers.HyperlinkedRelatedField(
+        many=True,
+        queryset=UsuarioModel.objects.all(),
+        view_name='usuario-detail',
+        required=False
+        )
 
     class Meta:
         model = Projeto

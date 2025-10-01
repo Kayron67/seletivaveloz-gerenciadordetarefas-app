@@ -26,7 +26,7 @@
                             <p class="card-text">{{ projeto.descricao|truncatewords:15|default:"Sem descrição." }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{% url 'projeto-detail' pk=projeto.pk %}" class="btn btn-secondary btn-sm">Ver Projeto</a>
+                            <a href="{% url 'projeto-detail-page' pk=projeto.pk %}" class="btn btn-secondary btn-sm">Ver Projeto</a>
                         </div>
                     </div>
                 </div>

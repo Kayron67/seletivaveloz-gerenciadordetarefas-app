@@ -1,2 +1,5 @@
-Django>=4.0
-gunicorn
+Django~=5.2
+gunicorn~=23.0
+djangorestframework~=3.16
+drf-nested-routers~=0.95
+python-dotenv~=1.0

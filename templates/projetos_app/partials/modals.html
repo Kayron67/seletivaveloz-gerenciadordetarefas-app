@@ -1,0 +1,84 @@
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMemberModalLabel">Adicionar Membro ao Projeto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-member-form">
+                    <div class="mb-3">
+                        <label for="user-select" class="form-label">Selecione o Usuário</label>
+                        <select class="form-select" id="user-select">
+                            {% for usuario in usuarios_disponiveis %}
+                                <option value="{{ usuario.pk }}">{{ usuario.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" id="submit-add-member">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addFileiraModal" tabindex="-1" aria-labelledby="addFileiraModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFileiraModalLabel">Adicionar Nova Fileira</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-fileira-form">
+                    <div class="mb-3">
+                        <label for="fileira-titulo" class="form-label">Nome da Fileira</label>
+                        <input type="text" class="form-control" id="fileira-titulo" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" id="submit-add-fileira">Salvar Fileira</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addTarefaModal" tabindex="-1" aria-labelledby="addTarefaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTarefaModalLabel">Adicionar Nova Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-tarefa-form">
+                    <div class="mb-3">
+                        <label for="tarefa-titulo" class="form-label">Título da Tarefa</label>
+                        <input type="text" class="form-control" id="tarefa-titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tarefa-descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="tarefa-descricao" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tarefa-fileira" class="form-label">Fileira</label>
+                        <select class="form-select" id="tarefa-fileira">
+                            {% for fileira in projeto.fileiras.all %}
+                                <option value="{{ fileira.id }}">{{ fileira.titulo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" id="submit-add-tarefa">Salvar Tarefa</button>
+            </div>
+        </div>
+    </div>
+</div>

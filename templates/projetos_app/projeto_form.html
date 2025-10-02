@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Novo Projeto{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Criar Novo Projeto</h2>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Salvar Projeto</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

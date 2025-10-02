@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}{{ projeto.titulo }} - Gerenciador de Tarefas{% endblock %}
+
+{% block extra_head %}
+
+<style>
+    body {
+        background-color: #ffff
+    }
+    .kanban-board {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+    .kanban-column {
+        flex: 0 0 300px;
+        background-color: #c7c7c7ff;
+        border-radius: 5px;
+        margin-right: 1rem;
+        padding: 1rem;
+    }
+    .tasks-list {
+        min-height: 20px;
+        height: 100%;
+    }
+    .kanban-column h5 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .task-card {
+        background-color: #9b9b9bff;
+        border: 1px solid #ffff;
+        border-radius: 4px;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    .task-card-concluida {
+        background-color: #56da9eff;
+        text-decoration: line-through;
+        color: #555;
+    }
+    .task-card:active {
+        cursor: grabbing;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ projeto.titulo }}</h2>
+        <div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTarefaModal">Adicionar Tarefa</button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addFileiraModal">Adicionar Fileira</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">Adicionar Membro</button>
+        </div>
+    </div>
+
+    <div class="kanban-board">
+        {% for fileira in projeto.fileiras.all %}
+        <div class="kanban-column">
+            <h5>
+            {{ fileira.titulo }}
+            </h5>
+            <div class="tasks-list" data-fileira-id="{{ fileira.id }}">
+                {% for tarefa in fileira.tarefas.all %}
+                <div class="task-card {% if tarefa.concluida %}concluida{% endif %}"
+                    data-tarefa-id="{{ tarefa.id }}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#taskDetailModal">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="task-title">{{ tarefa.titulo }}</span>
+                        {% if tarefa.concluida %}
+                        <span class="badge bg-success concluido-badge">Concluido</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% include "projetos_app/partials/modals.html" %}
+
+<div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskDetailModalLabel">Detalhes da Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 id="task-detail-titulo"></h4>
+                <p id="task-detail-descricao"></p>
+                <hr>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" value="" id="task-detail-concluida">
+                    <label class="form-check-label" for="task-detail-concluida">Concluida</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function (){
+        function getCookie(name) {
+            let cookieValue = null
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        const taskLists = document.querySelectorAll('.tasks-list');
+        taskLists.forEach(list => {
+            new Sortable(list, {
+                group: 'shared',
+                animation: 150,
+                onEnd: function (evt) {
+                    const tarefaId = evt.item.dataset.tarefaId;
+                    const novaFileiraId = evt.to.dataset.fileiraId;
+                    console.log(`Tarefa ${tarefaId} movida para fileira ${novaFileiraId}`);
+                    const url = `/api/projetos/{{ projeto.pk }}/tarefas/${tarefaId}/`;
+                    
+                    fetch(url, {
+                        method:'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({ fileira: novaFileiraId })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Falha ao atualizar a tarefa.');
+                        return response.json();
+                    })
+                    .then(data => console.log('Sucesso:', data))
+                    .catch(error => console.error('Erro:', error));
+                }
+            });
+        });
+
+        const taskDetailModal = document.getElementById('taskDetailModal');
+        taskDetailModal.addEventListener('show.bs.modal', function (event){
+            const card = event.relatedTarget;
+            const tarefaId = card.getAttribute('data-tarefa-id');
+            const url = `/api/projetos/{{ projeto.pk }}/tarefas/${tarefaId}/`;
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('task-detail-titulo').textContent = data.titulo;
+                document.getElementById('task-detail-descricao').textContent = data.descricao || 'Sem descrição.';
+                const concluidaCheckbox = document.getElementById('task-detail-concluida');
+                concluidaCheckbox.checked = data.concluida;
+                concluidaCheckbox.setAttribute('data-tarefa-id', tarefaId);
+            });
+        });
+
+        document.getElementById('task-detail-concluida').addEventListener('change', function(event){
+            const tarefaId = event.target.getAttribute('data-tarefa-id');
+            const isConcluida = event.target.checked;
+            const url = `/api/projetos/{{ projeto.pk }}/tarefas/${tarefaId}/`;
+
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ concluida: isConcluida })
+            })
+            .then(response => {
+                if (response.ok) {
+                    const card = document.querySelector(`.task-card[data-tarefa-id='${tarefaId}']`);
+                    if (isConcluida) {
+                        card.classList.add('concluida');
+                        if (!card.querySelector('.concluido-badge')) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge bg-success concluido-badge';
+                            badge.textContent = 'Concluído';
+                            card.querySelector('.d-flex').appendChild(badge);
+                        }
+                    } else {
+                        card.classList.remove('concluida');
+                        const badge = card.querySelector('.concluido-badge');
+                        if (badge) {
+                            badge.remove();
+                        }
+                    }
+                } else {
+                    alert('Não foi possivel atualizar a tarefa.');
+                    event.target.checked = !isConcluida;
+                }
+            });
+        });
+
+        document.getElementById('submit-add-fileira').addEventListener('click', function(){
+            const fileiraTitulo = document.getElementById('fileira-titulo').value;
+            if(!fileiraTitulo) {
+                alert('Por favor, insira um nome para a fileira.');
+                return;
+            }
+
+            const url = `/api/projetos/{{ projeto.pk }}/fileiras/`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ titulo: fileiraTitulo })
+            })
+            .then(response => {
+                if(response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Não foi possivel criar a fileira.');
+                }
+            })
+            .catch(error => console.error('Erro ao criar fileira:', error));
+        });
+
+        document.getElementById('submit-add-tarefa').addEventListener('click', function(){
+            const tarefaTitulo = document.getElementById('tarefa-titulo').value;
+            const tarefaDescricao = document.getElementById('tarefa-descricao').value;
+            const fileiraId = document.getElementById('tarefa-fileira').value;
+
+            if(!tarefaTitulo) {
+                alert('Por favor, insira um titulo para a tarefa.');
+                return;
+            }
+
+            const url = `/api/projetos/{{ projeto.pk }}/tarefas/`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({
+                    titulo: tarefaTitulo,
+                    descricao: tarefaDescricao,
+                    fileira: fileiraId
+                })
+            })
+            .then(response => {
+                if(response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Não foi possivel criar a tarefa.');
+                }
+            })
+            .catch(error => console.error('Erro ao criar tarefa:', error));
+        });
+
+        document.getElementById('submit-add-member').addEventListener('click', function() {
+            const userId = document.getElementById('user-select').value;
+            if (!userId) return;
+
+            const membrosAtuais = [{% for membro in projeto.membros.all %}"{% url 'usuario-detail' pk=membro.pk %}",{% endfor %}];
+            const novoMembroUrl = `{% url 'usuario-detail' pk=0 %}`.replace('/0/', `/${userId}/`);
+
+            const novosMembros = [...new Set([...membrosAtuais, novoMembroUrl])];
+
+            const url = `{% url 'projeto-detail' pk=projeto.pk %}`;
+            const csrfToken = getCookie('csrftoken');
+
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ membros: novosMembros })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Não foi possivel adicionar o membro.');
+                }
+            })
+            .catch(error => console.error('Erro ao adicionar membro:', error));
+        })
+    });
+</script>
+{% endblock %}    

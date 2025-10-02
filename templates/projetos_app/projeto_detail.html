@@ -35,10 +35,9 @@
         border-radius: 4px;
         padding: 0.75rem;
         margin-bottom: 0.5rem;
-        cursor: grab;
     }
     .task-card-concluida {
-        background-color: #d1e4e7ff;
+        background-color: #56da9eff;
         text-decoration: line-through;
         color: #555;
     }
@@ -71,7 +70,12 @@
                     data-tarefa-id="{{ tarefa.id }}"
                     data-bs-toggle="modal"
                     data-bs-target="#taskDetailModal">
-                    {{ tarefa.titulo }}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="task-title">{{ tarefa.titulo }}</span>
+                        {% if tarefa.concluida %}
+                        <span class="badge bg-success concluido-badge">Concluido</span>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -144,7 +148,7 @@
                         method:'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': csrfToken
+                            'X-CSRFToken': csrftoken
                         },
                         body: JSON.stringify({ fileira: novaFileiraId })
                     })
@@ -168,7 +172,7 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('task-detail-titulo').textContent = data.titulo;
-                document.getElementById('task-detail-decricao').textContent = data.decricao || 'Sem descrição.';
+                document.getElementById('task-detail-descricao').textContent = data.descricao || 'Sem descrição.';
                 const concluidaCheckbox = document.getElementById('task-detail-concluida');
                 concluidaCheckbox.checked = data.concluida;
                 concluidaCheckbox.setAttribute('data-tarefa-id', tarefaId);
@@ -189,15 +193,26 @@
                 body: JSON.stringify({ concluida: isConcluida })
             })
             .then(response => {
-                if (!response.ok) {
-                    const card = document.querySelectorAll(`.task-card[data-tarefa-id='${tarefaId}']`);
+                if (response.ok) {
+                    const card = document.querySelector(`.task-card[data-tarefa-id='${tarefaId}']`);
                     if (isConcluida) {
                         card.classList.add('concluida');
+                        if (!card.querySelector('.concluido-badge')) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge bg-success concluido-badge';
+                            badge.textContent = 'Concluído';
+                            card.querySelector('.d-flex').appendChild(badge);
+                        }
                     } else {
-                        card.classList.add('concluida');
+                        card.classList.remove('concluida');
+                        const badge = card.querySelector('.concluido-badge');
+                        if (badge) {
+                            badge.remove();
+                        }
                     }
                 } else {
                     alert('Não foi possivel atualizar a tarefa.');
+                    event.target.checked = !isConcluida;
                 }
             });
         });
@@ -277,7 +292,7 @@
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': csrftoken
                 },
                 body: JSON.stringify({ membros: novosMembros })
             })

@@ -13,9 +13,15 @@
     <!-- Navbar vai aparecer, seleção de projetos(pagina main) e conta do usuario no lado oposto extremo direito -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <h3 class="navbar-brand">Gerenciador De Tarefas</h3>
-            <a href="#" class="navbar-link">Seus Projetos</a>
-            <a href="#" class="navbar-link">Sua Conta</a>
+            <a href="{% url 'home' %}" class="navbar-brand">Gerenciador De Tarefas</a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="{% url 'home' %}" class="btn btn-outline-light me-2">Seus Projetos</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'user-profile' %}" class="btn btn-light">Sua Conta ({{ user.username }})</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-light">Entrar</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
